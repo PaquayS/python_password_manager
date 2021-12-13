@@ -3,13 +3,13 @@ import os
 import base64
 
 # import numpy as np #just in case I want to use it.
+import sys
 
 manager_list = []
 clear_list = ["Site", "UID", "Login"]
 main_password = ""
 firstTime = True
 correctPassword = False
-bsufdbos = False
 
 
 class Manager:
@@ -78,7 +78,7 @@ def write_text():
     global main_password
     _encrypted_1 = main_password.encode('utf-8')
     _encrypted_2 = base64.b64encode(_encrypted_1, altchars=None)
-    with open("venv/random.txt", "wb") as fp:
+    with open(os.path.join(sys.path[0], "random.txt"), "wb") as fp:
         pickle.dump(_encrypted_2, fp)
         pickle.dump(manager_list, fp)
 
@@ -86,8 +86,8 @@ def write_text():
 def read_text():
     global manager_list
     global main_password
-    with open("venv/random.txt", "rb") as fp:
-        _file_size = os.path.getsize("venv/random.txt")
+    with open(os.path.join(sys.path[0], "random.txt"), "rb") as fp:
+        _file_size = os.path.getsize("random.txt")
         if _file_size > 0:
             _decrypted_2 = pickle.load(fp)
             manager_list = pickle.load(fp)
@@ -157,7 +157,7 @@ def clear_file():  # clear all your logins.
     print("\nAre you sure? Y/N\n")
     confirm = input()
     if confirm.lower() == "y":
-        with open("venv/random.txt", "wb") as fp:
+        with open(os.path.join(sys.path[0], "random.txt"), "wb") as fp:
             pickle.dump(clear_list, fp)
     elif confirm.lower() == "n":
         do_what()
