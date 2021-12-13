@@ -9,6 +9,7 @@ clear_list = ["Site", "UID", "Login"]
 main_password = ""
 firstTime = True
 correctPassword = False
+bsufdbos = False
 
 
 class Manager:
