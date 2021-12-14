@@ -7,6 +7,8 @@ I made this in my free time to practice more python, I decided for a password ma
  
  Be aware that if you lose your .txt file or it gets wiped the passwords are gone, so it's always good to save a copy of it somewhere.
  
+ 
+ 
  To Do:
  
  rename .txt file
