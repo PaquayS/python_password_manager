@@ -20,7 +20,26 @@ class Manager:
         self.password = base64.b64encode(password_encrypted, altchars=None)
         _decrypted_password = base64.b64decode(self.password, altchars=None, validate=False)
         _decoded_password = _decrypted_password.decode('utf-8')
+        self.decoded = _decoded_password
         print(self.site + '\t' + self.UID + '\t' + _decoded_password)
+
+    def manager_show_selected(self):
+        return self.site + "\t" + self.UID + "\t" + self.decoded
+
+    def change_site(self, new_site):
+        self.site = new_site
+        self.UID =self.UID
+        self.password = self.password
+
+    def change_uid(self, new_uid):
+        self.site = self.site
+        self.UID = new_uid
+        self.password = self.password
+
+    def change_password(self, _new_password):
+        self.site = self.site
+        self.UID = self.UID
+        self.password = _new_password
 
 
 def new_manager():
@@ -30,6 +49,7 @@ def new_manager():
         input("UID:\t"),
         input("password:\t"),
     )
+    _manager.manager_show_selected()
     manager_list.append(_manager)
     write_text()
     do_what()
@@ -39,13 +59,14 @@ def do_what():  # the "main" menu
     global manager_list
 
     print("what do you want to do?\n")
-    print("New log in.\t\tnew\n"
+    print("New log in.\t\t\t\tnew\n"
           "Show selected log in.\tselected\n"
-          "Show all.\t\tall\n"
+          "Show all.\t\t\t\tall\n"
           "Change main password.\tchange password\n"
-          "Change a login.\t\tchange login\n"
-          "Remove a login.\t\tremove login\n"
-          "End the program.\tquit\n")
+          "Change a login.\t\t\tchange login\n"
+          "Remove a login.\t\t\tremove login\n"
+          "Clear all logins.\t\tclear all\n"
+          "End the program.\t\tquit\n")
     command = input()
 
     if command.lower() == "new":  # give a new login
@@ -54,13 +75,13 @@ def do_what():  # the "main" menu
         show_all()
     elif command.lower() == "selected":  # show the selected log in
         show_selected()
-    # elif command.lower() == "clear all": #clear all logins
-    #   clear_file()
+    elif command.lower() == "clear all":  # clear all logins
+        clear_file()
     elif command.lower() == "change password":  # change your password
         new_password()
     elif command.lower() == "change login":  # change a login
         change_manager()
-    elif command.lower() == "remove login":
+    elif command.lower() == "remove login":  # remove a single login
         remove_login()
     elif command.lower() == "quit":  # end the program
         end()
@@ -131,9 +152,11 @@ def show_all():
     global manager_list
     print("\nshow all\n")
     for i, value in enumerate(manager_list):
-        _decrypted_password = base64.b64decode(value.password, altchars=None, validate=False)
-        _decoded_password = _decrypted_password.decode('utf-8')
-        print(i, '\t', value.site, '\t', value.UID, '\t', _decoded_password, '\n')
+        # old working version in case something breaks later on.
+        # _decrypted_password = base64.b64decode(value.password, altchars=None, validate=False)
+        # _decoded_password = _decrypted_password.decode('utf-8')
+        # print(i, '\t', value.site, '\t', value.UID, '\t', _decoded_password, '\n')
+        print(i, '\t', value.manager_show_selected())
     do_what()
 
 
@@ -145,25 +168,28 @@ def show_selected():
     _index = int(input())
     for i, value in enumerate(manager_list):
         if _index == i:
-            _decrypted_password = base64.b64decode(value.password, altchars=None, validate=False)
-            _decoded_password = _decrypted_password.decode('utf-8')
-            print(value.site + '\t' + value.UID + '\t' + _decoded_password, '\n')
+            # old working version in case something breaks later on.
+            # _decrypted_password = base64.b64decode(value.password, altchars=None, validate=False)
+            # _decoded_password = _decrypted_password.decode('utf-8')
+            # print(value.site + '\t' + value.UID + '\t' + _decoded_password, '\n')
+            print(value.manager_show_selected())
     do_what()
 
 
-# currently not working as intended.
 def clear_file():  # clear all your logins.
     global clear_list
+    global manager_list
     print("\nAre you sure? Y/N\n")
     confirm = input()
     if confirm.lower() == "y":
-        with open(os.path.join(sys.path[0], "random.txt"), "wb") as fp:
-            pickle.dump(clear_list, fp)
+        manager_list.clear()
     elif confirm.lower() == "n":
         do_what()
     else:
         print("\nPlease use Y or N.\n")
         clear_file()
+    write_text()
+    do_what()
 
 
 def new_password():  # change your login password
@@ -176,29 +202,53 @@ def new_password():  # change your login password
 
 def change_manager():  # change a single input off an already existing login.
     global manager_list
-    print("\nGive the sitename of which password you want to see.\n\n")
-    for i in range(len(manager_list)):  # print all the site names.
-        print(manager_list[i].site)
-    _sitename = input()
-    for i in range(len(manager_list)):  # go to your selected site
-        if _sitename == manager_list[i].site:
-            print("\nWhat do you want to change?\n")
-            _change_1 = input("Site, UID or password?\n")  # select if you want to change site, UID or password.
-            if _change_1.lower() == "site":
-                print("\nEnter the new address.\n\n")
-                manager_list[i].site = input()  # get new input
-                manager_list[i].UID = manager_list[i].UID  # put old input back
-                manager_list[i].password = manager_list[i].password  # put old input back
-            elif _change_1.lower() == "uid":
-                print("\nEnter the new UID.\n\n")
-                manager_list[i].site = manager_list[i].site
-                manager_list[i].UID = input()
-                manager_list[i].password = manager_list[i].password
-            elif _change_1.lower() == "password":
-                print("\nEnter the new password.\n")
-                manager_list[i].site = manager_list[i].site
-                manager_list[i].UID = manager_list[i].UID
-                manager_list[i].password = input()
+    # old working code, safety in case the new version breaks.
+    #print("\nGive the sitename of which password you want to see.\n\n")
+    #for i in range(len(manager_list)):  # print all the site names.
+    #    print(manager_list[i].site)
+    #_sitename = input()
+    # for i in range(len(manager_list)):  # go to your selected site
+    #    if _sitename == manager_list[i].site:
+    #        print("\nWhat do you want to change?\n")
+    #        _change_1 = input("Site, UID or password?\n")  # select if you want to change site, UID or password.
+    #        if _change_1.lower() == "site":
+    #            print("\nEnter the new address.\n\n")
+    #            manager_list[i].site = input()  # get new input
+    #            manager_list[i].UID = manager_list[i].UID  # put old input back
+    #            manager_list[i].password = manager_list[i].password  # put old input back
+    #        elif _change_1.lower() == "uid":
+    #            print("\nEnter the new UID.\n\n")
+    #            manager_list[i].site = manager_list[i].site
+    #            manager_list[i].UID = input()
+    #            manager_list[i].password = manager_list[i].password
+    #        elif _change_1.lower() == "password":
+    #            print("\nEnter the new password.\n")
+    #            manager_list[i].site = manager_list[i].site
+    #            manager_list[i].UID = manager_list[i].UID
+    #            manager_list[i].password = input()
+    print("\nGive the index of the login you want to change.\n")
+    for i, value in enumerate(manager_list):
+        print('\n', i + 1, value.site, '\n')
+    _index = int(input())
+    if _index:
+        for i, value in enumerate(manager_list):
+            if _index == i + 1:
+                print("\nWhat do you want to change?\n")
+                _change = input("Site, UID or password?\n")  # select if you want to change site, UID or password.
+                if _change.lower() == "site":
+                    _new_value = input("\nEnter the new address.\n\n")
+                    value.change_site(_new_value)
+                elif _change.lower(_new_value) == "uid":
+                    _new_value = input("\nEnter the new UID.\n\n")
+                    value.change_uid()
+                elif _change.lower() == "password":
+                    _new_value = input("\nEnter the new password.\n\n")
+                    value.change_password(_new_value)
+                else:
+                    print("\nWrong input, please try again.\n\n")
+                    change_manager()
+    else:
+        print("\nWrong input, you're being redirected to the main menu.\n\n")
     write_text()
     do_what()  # go back to "main" menu
 
@@ -219,7 +269,7 @@ def remove_login():
     do_what()
 
 
-#with open("venv/random.txt", "rb") as fp:
+# with open("venv/random.txt", "rb") as fp:
 #    file_size = os.path.getsize("venv/random.txt")
 #    if file_size > 0:
 #        read_text()
@@ -227,8 +277,6 @@ def remove_login():
 read_text()
 _main_password()
 
-
 # To DO list:
 # find a way to hide the .txt file
-# clean up code
-# upload to git
+#
