@@ -3,4 +3,6 @@
  
  the commands aren't case sensitive, your site, UID and password are.
  
- Todo: figure out how to full wipe all logins wo getting error, cleaning code up a bit more
+ rename .txt file
+ fix spacing in showing the logins
+ 
