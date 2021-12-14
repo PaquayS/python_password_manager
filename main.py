@@ -59,14 +59,14 @@ def do_what():  # the "main" menu
     global manager_list
 
     print("what do you want to do?\n")
-    print("New log in.\t\t\t\tnew\n"
+    print("New log in.\t\tnew\n"
           "Show selected log in.\tselected\n"
-          "Show all.\t\t\t\tall\n"
+          "Show all.\t\tall\n"
           "Change main password.\tchange password\n"
-          "Change a login.\t\t\tchange login\n"
-          "Remove a login.\t\t\tremove login\n"
-          "Clear all logins.\t\tclear all\n"
-          "End the program.\t\tquit\n")
+          "Change a login.\t\tchange login\n"
+          "Remove a login.\t\tremove login\n"
+          "Clear all logins.\tclear all\n"
+          "End the program.\tquit\n")
     command = input()
 
     if command.lower() == "new":  # give a new login
