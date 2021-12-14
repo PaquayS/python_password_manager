@@ -7,7 +7,9 @@ I made this in my free time to practice more python, I decided for a password ma
  
  Be aware that if you lose your .txt file or it gets wiped the passwords are gone, so it's always good to save a copy of it somewhere.
  
- Spacing in show all becomes messy for Site and UID inputs longer than 31 in length
+ Spacing in show all becomes messy for Site and UID inputs longer than 31 in length, "ThisIsARandomUIDWithALengthOf31" is an example of the maximun length to make it still looks clean.
+ 
+ Passwords can be any length, but may continue on the next line while doing show all depending your console window width.
  
  
  
