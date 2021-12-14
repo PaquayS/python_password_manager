@@ -99,7 +99,7 @@ def write_text():
     global main_password
     _encrypted_1 = main_password.encode('utf-8')
     _encrypted_2 = base64.b64encode(_encrypted_1, altchars=None)
-    with open(os.path.join(sys.path[0], "random.txt"), "wb") as fp:
+    with open(os.path.join(sys.path[0], "db.txt"), "wb") as fp:
         pickle.dump(_encrypted_2, fp)
         pickle.dump(manager_list, fp)
 
@@ -107,8 +107,8 @@ def write_text():
 def read_text():
     global manager_list
     global main_password
-    with open(os.path.join(sys.path[0], "random.txt"), "rb") as fp:
-        _file_size = os.path.getsize("random.txt")
+    with open(os.path.join(sys.path[0], "db.txt"), "rb") as fp:
+        _file_size = os.path.getsize("db.txt")
         if _file_size > 0:
             _decrypted_2 = pickle.load(fp)
             manager_list = pickle.load(fp)
@@ -177,7 +177,6 @@ def show_selected():
 
 
 def clear_file():  # clear all your logins.
-    global clear_list
     global manager_list
     print("\nAre you sure? Y/N\n")
     confirm = input()
